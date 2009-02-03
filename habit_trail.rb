@@ -9,6 +9,26 @@ get "/screen.css" do
   sass :screencss
 end
 
+get "/:name" do
+  
+end
+
+get "/:name/items" do
+  
+end
+
+post "/:name/items" do
+  
+end
+
+put "/:name/items/:item" do
+  
+end
+
+delete "/:name/items/:item" do
+  
+end
+
 helpers do
   def get_title
     return "Habit Trail"
@@ -77,3 +97,4 @@ h3
   +section
   :text-align right
   :font-size= !baseline * 0.85
+  
