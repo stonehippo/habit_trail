@@ -3,31 +3,9 @@ require "sinatra"
 require "png"
 require "base64"
 require "sequel"
+require "lib/models"
 
-db = Sequel.connect(['sqlite:',Dir.pwd,'/habit_trail.db'].join)
-
-class User < Sequel::Model
-  one_to_many :items
-end
-
-class Item < Sequel::Model
-  one_to_many :streaks
-  
-  def day_count
-    self.streaks.size
-  end
-  
-  def streak_data
-    data = []
-    self.streaks.each do |streak|
-      data << ((streak.task_done) ? 1 : 0)
-    end
-    data
-  end
-end
-
-class Streak < Sequel::Model
-end
+include HabitTrail
 
 get "/" do
   @users = User.all
