@@ -3,9 +3,11 @@
     %title= get_title()
     %link{ :rel => "stylesheet", :type => "text/css", :href => "/reset.css" }
     %link{ :rel => "stylesheet", :type => "text/css", :href => "/screen.css" }
+    %script{ :src => "jquery-1.3.1.min.js"}
   %body
     - header = haml(:header, :layout => false)
     #header= header
     #main= yield
     - footer = haml(:footer, :layout => false)
     #footer= footer
+    %script{ :src => "habit_trail.js"}
