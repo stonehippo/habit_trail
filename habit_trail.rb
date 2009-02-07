@@ -1,6 +1,36 @@
+require "rubygems"
 require "sinatra"
+require "png"
+require "base64"
+require "sequel"
+
+db = Sequel.connect(['sqlite:',Dir.pwd,'/habit_trail.db'].join)
+
+class User < Sequel::Model
+  one_to_many :items
+end
+
+class Item < Sequel::Model
+  one_to_many :streaks
+  
+  def day_count
+    self.streaks.size
+  end
+  
+  def streak_data
+    data = []
+    self.streaks.each do |streak|
+      data << ((streak.task_done) ? 1 : 0)
+    end
+    data
+  end
+end
+
+class Streak < Sequel::Model
+end
 
 get "/" do
+  @users = User.all
   haml :index
 end
 
@@ -10,7 +40,14 @@ get "/screen.css" do
 end
 
 get "/:name" do
-  
+  if (@user = User.filter('username = ?', params[:name]).first)
+    @items = @user.items
+    
+    haml :user
+  else
+    # TODO handle this a bit better!
+    halt 500, "no such user, dude"
+  end
 end
 
 get "/:name/items" do
@@ -33,68 +70,23 @@ helpers do
   def get_title
     return "Habit Trail"
   end
+  
+  def generate_sparkline(data=[], options={})
+    @height = 10
+    @graphic_height = @height - 1
+    
+    @canvas = PNG::Canvas.new data.size * 4, @height, PNG::Color::White 
+    
+    i = 0
+    data.each do |datum|
+      @color = (datum == 1) ? PNG::Color::Red : PNG::Color::White
+      @canvas.line i, 0, i, @graphic_height, @color
+      @canvas.line i+1, 0, i+1, @graphic_height, @color
+      i += 4
+    end
+
+    png = PNG.new @canvas
+    Base64.encode64(png.to_blob)
+  end
 end
-
-__END__
-@@ layout
-%html
-  %head
-    %title= get_title()
-    %link{ :rel => "stylesheet", :type => "text/css", :href => "/reset.css" }
-    %link{ :rel => "stylesheet", :type => "text/css", :href => "/screen.css" }
-  %body
-    - header = haml(:header, :layout => false)
-    #header= header
-    #main= yield
-    - footer = haml(:footer, :layout => false)
-    #footer= footer
-
-@@ header
-%h1= get_title.upcase
-%h2 Tracking Things You Want to Do Everyday
-
-@@ footer
-%p Copyright &copy; 2009 George White
-
-@@ index
-%p
-  Habit Trail is a 
-  %a{ :href => "http://lifehacker.com/software/motivation/jerry-seinfelds-productivity-secret-281626.php"} Seinfeld calendar
-  for tracking things you want to do everyday.
-
-@@ screencss
-!main_color= #000
-!background_color= #fff
-!highlight_color= #f00
-!baseline= 16px
-
-=section
-  :margin-top= !baseline
-
-*
-  :font-family Arial, sans-serif
-
-body
-  :width 720px
-  :margin= !baseline auto 0 auto
-
-h1
-  :color= !highlight_color
-  :font-size= !baseline * 2.5
-  :letter-spacing -0.85px
-h2
-  :font-size= !baseline * 2
-
-h3
-
-#header
-  +section
-  :border-top= !baseline solid !main_color
-
-#main
-  +section
-#footer
-  +section
-  :text-align right
-  :font-size= !baseline * 0.85
   

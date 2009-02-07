@@ -17,7 +17,7 @@ describe "Habit Trail" do
   end
   
   it "should get the home page for a user" do
-    get("/foo")
+    get("/stonehippo")
     @response.should be_ok
   end
   
