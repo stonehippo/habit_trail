@@ -1,3 +1,12 @@
 $(document).ready(function(){
-  // TODO Habit Trail goodness here!
+  $("#add_task").click(function() {
+    $(this).hide();
+    $("#add_task_form").fadeIn("fast");
+  });
+  
+  $("#cancel_add_task").click(function(){
+    $("#add_task_form").slideUp("fast", function(){
+      $("#add_task").show();
+    });
+  });
 });

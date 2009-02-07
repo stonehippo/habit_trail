@@ -6,6 +6,9 @@
 =section
   :margin-top= !baseline
 
+=small_font
+  :font-size= !baseline * 0.80
+
 *
   :font-family Arial, sans-serif
 
@@ -28,11 +31,20 @@ p
   :margin-bottom= !baseline
 
 .small
-  :font-size= !baseline * 0.8
+  +small_font
 
-.tasklist, .userlist
-  :margin= !baseline 0 !baseline 0
+.task_list, .userlist
+  :margin= !baseline 0 0 0
 
+.task_item
+  :margin-bottom= !baseline /2
+
+#add_task_form
+  :display none
+
+#add_task, #cancel_add_task
+  +small_font
+  
 #header
   +section
   :border-top= !baseline solid !main_color
@@ -41,5 +53,5 @@ p
   +section
 #footer
   +section
+  +small_font
   :text-align right
-  :font-size= !baseline * 0.85

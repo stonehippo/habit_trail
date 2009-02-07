@@ -1,9 +1,19 @@
 %h3= "#{@user.username.capitalize}'s Daily Tasks"
-%ul.tasklist
+%ul.task_list
   - @items.each do |item|
-    %li.taskitem{ :id => [@user.id, '_', item.id].join}
+    %li.task_item{ :id => [@user.id, '_', item.id].join}
       = item[:description]
       %span.small= item.start_date.strftime("Created on %m/%d/%Y")
       %br
       - @image = generate_sparkline(item.streak_data)
       = haml(:sparkline, :layout => false)
+#add_task_control
+  #add_task_form
+    %form
+      %input{ :type => "text", :action => "add.html", :name => "new_task_description", :id => "new_task_description" }
+      %br
+      %input{ :type=> "submit", :value => "Add this task" }
+      %span#cancel_add_task
+        or
+        %a{ :href=> "#" } Close
+  %a#add_task{ :href => "#" } Add a task
