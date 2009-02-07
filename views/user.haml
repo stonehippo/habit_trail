@@ -6,4 +6,4 @@
       %span.small= item.start_date.strftime("Created on %m/%d/%Y")
       %br
       - @image = generate_sparkline(item.streak_data)
-      - haml(:sparkline, :layout => false)
+      = haml(:sparkline, :layout => false)
