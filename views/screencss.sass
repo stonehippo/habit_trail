@@ -1,0 +1,42 @@
+!main_color= #000
+!background_color= #fff
+!highlight_color= #f00
+!baseline= 16px
+
+=section
+  :margin-top= !baseline
+
+*
+  :font-family Arial, sans-serif
+
+body
+  :width 720px
+  :margin= !baseline auto 0 auto
+
+h1
+  :color= !highlight_color
+  :font-size= !baseline * 2.5
+  :letter-spacing -0.85px
+
+h2
+  :font-size= !baseline * 2
+
+h3
+  :font-size= !baseline * 1.4
+
+.small
+  :font-size= !baseline * 0.8
+
+.tasklist
+  :margin= !baseline 0 !baseline 0
+
+#header
+  +section
+  :border-top= !baseline solid !main_color
+
+#main
+  +section
+#footer
+  +section
+  :text-align right
+  :font-size= !baseline * 0.85

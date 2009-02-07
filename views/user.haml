@@ -1,0 +1,9 @@
+%h3= "#{@user.username.capitalize}'s Daily Tasks"
+%ul.tasklist
+  - @items.each do |item|
+    %li.taskitem{ :id => [@user.id, '_', item.id].join}
+      = item[:description]
+      %span.small= item.start_date.strftime("Created on %m/%d/%Y")
+      %br
+      - @image = generate_sparkline(item.streak_data)
+      = "#{haml(:sparkline, :layout => false)}"
