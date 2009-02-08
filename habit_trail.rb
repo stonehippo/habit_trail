@@ -7,6 +7,8 @@ require "lib/models"
 
 include HabitTrail
 
+set :haml, { :format => :html4 }
+
 get "/" do
   @users = User.all
   haml :index
@@ -14,7 +16,7 @@ end
 
 get "/screen.css" do
   content_type "text/css", :charset => "utf-8"
-  sass :screencss
+  sass :screencss, :sass => { :style => :compressed }
 end
 
 get "/:name" do
