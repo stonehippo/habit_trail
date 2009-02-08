@@ -6,7 +6,11 @@
       %span.small= item.start_date.strftime("Created on %m/%d/%Y")
       %br
       - @image = generate_sparkline(item.streak_data)
-      = haml(:sparkline, :layout => false)
+      - unless @image.nil?
+        = haml(:sparkline, :layout => false)
+        %br
+      %span
+        %input{ :type => "checkbox", :class => "task_update", :id => [@user.id, '_', item.id, "_update"].join}I did this today!
 #add_task_control
   #add_task_form
     %form

@@ -52,6 +52,10 @@ helpers do
   end
   
   def generate_sparkline(data=[], options={})
+    if data.empty?
+      return nil
+    end
+    
     @height = 10
     @graphic_height = @height - 1
     
